@@ -9,22 +9,19 @@
     
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-
-    <!-- Overrride Foundation CSS -->
-    <!-- <link rel="stylesheet" href="css/foundation.css"> -->
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src= "script.js"></script>
+  
 
   </head>
   <header>
     <div class="hero-section">
       <div class="hero-section-text">
         <h1>Weather Dashboard</h1>
-        <!-- <h5>subtitle about anything you like</h5> -->
+        
       </div>
     </div>
       <div\>
@@ -35,21 +32,177 @@
    
   
   <body>
-      <div class="card">
-        <!-- Card divider (header) -->
-        <div class="card-divider">
-          Search by City
-        </div>
-        
+
+    
+    <div class="container">
+      <div class="searchCard">
         <form class="navbar-form navbar-left" role="search">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search by City">
+          <div class="searchCard">
+            <h3>Search for City</h3>
+            <input type="text" id="citySearchBox" class="form-control" placeholder="Search by City">
+            <button type="submit" id="searchBtn" class="search-btn">Search</button>
           </div>
-          <button type="submit" class="btn btn-default">Search</button>
         </form>
-          
+      </div>
+      <div class="displayCard">
+        <div class = h2 id=searchCity></div>
+        <div class = h2 id=currDate></div>
+        <div><img id="wIcon" src="" alt="weather icon"></div>
+        
+          <table class="tg">
+          <!-- <thead>
+            <tr>
+              <th class="tg-0lax">City</th>
+              <th class="tg-0lax" id="searchCity"></th>
+            </tr>
+          </thead> -->
+          <tbody>
+            <!-- <tr>
+              <td class="tg-0lax">Latitude</td>
+              <td class="tg-0lax" id="apiLat"></td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">Longitude</td>
+              <td class="tg-0lax" id="apiLong"></td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">Date</td>
+              <td class="tg-0lax" id="apiDate"></td>
+            </tr> -->
+            <!-- <tr>
+              <td class="tg-0lax">Icon</td>
+              <td class="tg-0lax" id="apiIcon" ></td>
+            </tr> -->
+            <tr>
+              <td class="tg-0lax">Temperature: </td>
+              <td class="tg-0lax" id="apiTemp"></td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">Humidity: </td>
+              <td class="tg-0lax" id="apiHumidity"></td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">Wind Speed:</td>
+              <td class="tg-0lax" id=apiWind></td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">UV Index</td>
+              <td class="tg-0lax" id=apiUV></td>
+            </tr>
+          </tbody>
+          </table>  
+      </div>
+    </div>    
+     
+    
+    <div class="DayTitle">5 Day Forecast</div> 
+    <div class="fiveDayContainer">
+      <div id = day1 class = "dayBox">
+        <div id="day1_date"></div>
+        <img src="" id="day1_icon">
+        <h5 id="day1_temp"></h5>
+        <h5 id="day1_humidity"></h5>
+        
+      </div>
+      <div id = day2 class = "dayBox">
+        <div id="day2_date"></div>
+        <img src="" id="day2_icon">
+        <h5 id="day2_temp"></h5>
+        <h5 id="day2_humidity"></h5>
+        
+      </div>
+      <div id = day3 class = "dayBox">
+        <div id="day3_date"></div>
+        <img src="" id="day3_icon">
+        <h5 id="day3_temp"></h5>
+        <h5 id="day3_humidity"></h5>
+        
+      </div>
+      <div id = day4 class = "dayBox">
+        <div id="day4_date"></div>
+        <img src="" id="day4_icon">
+        <h5 id="day4_temp"></h5>
+        <h5 id="day4_humidity"></h5>
+      
+      </div>
+      <div id = day5 class = "dayBox">
+        <div id="day5_date"></div>
+        <img src="" id="day5_icon">
+        <h5 id="day5_temp"></h5>
+        <h5 id="day5_humidity"></h5>
+        
+      </div>
+    </div>    
+
+<script>
+var city = "Atlanta" 
+var date = moment().format('M/D/YY')
+var icon = "default ICON"
+var temp = "default temp"
+var humidity = "default humidity"
+var windSpeed = "default wind speed"
+var uvIndex = "default UV Index"
+console.log(date);
+
+
+// $("#citySearchBox").val();
+const myWeatherKey = "eb316842a585fb8c5d377857dda881c6"
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+myWeatherKey
+// var queryURLOneCall = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat"&lon="+lon"\&exclude=hourly,minutely&appid"+myWeatherKey
+
+// $("#searchBtn").click(function(){
+
+getWeather = function(citySearchBox){
+  $.ajax({
+    url: queryURL,
+    method: 'GET'})
+    .done(function(data){
+  console.log(data);    
+  
+//     getWeatherOneCall = function(){
+  
+//   $.ajax({
+//     url: queryURLOneCall,
+//     method: 'GET'})
+//     .done(function(dataOneCall){
       
 
+
+    //console.log(dataOneCall);
+
+  
+  const wthrIcon = "http://openweathermap.org/img/w/"+data.weather[0].icon+".png"
+
+  $("#currDate").text(date);
+  $("#searchCity").text(city);
+  $("#apiLat").append(data.coord.lat);
+  $("#apiLong").append(data.coord.lon);
+  $("#apiDate").append(moment().format('MM/DD/YY'));
+  $("#wIcon").attr("src",wthrIcon);
+  
+  $("#apiTemp").append(((data.main.temp-273.15)*9/5+32).toFixed(0)+"°F");
+  $("#apiHumidity").append(data.main.humidity+" %");
+  $("#apiWind").append((data.wind.speed*2.237).toFixed(2)+" mph");
+  $("#apiUV").append(uvIndex);
+
+  $("#day1_date").text(date);
+  $("#day1_icon").attr("src",wthrIcon);
+  $("#day1_temp").text(date);
+  $("#day1_humidity").text(date);
+  
+
+  }); 
+}    
+// getWeatherOneCall();
+getWeather();
+
+// function createInput(){
+//     var $input = $('<input type="button" value="new button" />');
+//     $input.appendTo($("citySearchBox"));
+// }
+// createInput();
+
+</script>
 
 
   </body>
