@@ -14,7 +14,23 @@ $(document).ready(function () {
   console.log("Last City= "+LastSearchedCity);
   console.log("Selected City= "+selectedCity);
   // console.log("Target City= "+targetCity);
-  
+ 
+  // ELIMINATE DUPLICATES IN CITY LIST OBJECT IN LOCAL STORAGE TO BUILD THE BUTTONS FOR RECENT SEARCHES
+  var cityListObj = [...new Set(cityListObj)];
+  for (var i = cityListObj.length; i > 0; i--) {
+    if (cityListObj[i] != undefined){
+
+    var cityRow = $("<tr>");
+    var cityColumn = $("<td>")
+    var cityLink = $("<button>")
+    cityLink.attr("class", "btn btn-light");
+    cityLink.attr("city", cityListObj[i]);
+    cityLink.text(cityListObj[i]);
+    $(cityColumn).append(cityLink);
+    $(cityRow).append(cityColumn);
+    $("tbodySearch").append(cityRow);
+}
+};
    $("#searchBtn").on('click', function () {//This opens the button click function
   // event.preventDefault()
     var selectedCity = $("#citySearchBox").val().trim();
@@ -109,8 +125,7 @@ getWeather();
                   // cityListObj.push(targetCity);
                   // localStorage.setItem("city", JSON.stringify(cityListObj)); 
   
-                  // ELIMINATE DUPLICATES IN CITY LIST OBJECT IN LOCAL STORAGE TO BUILD THE BUTTONS FOR RECENT SEARCHES
-  var uniqueCities = [...new Set(cityListObj)];
+  
   
   
   
