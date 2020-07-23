@@ -25,18 +25,32 @@
     </div>
   </header>
   <body>
-    <div class="container">
+    <!-- <div class="container"> -->
       <div class="searchCard">
-        <form class="navbar-form navbar-left" role="search">
+        <div class="navbar-form navbar-left" role="search">
           <div class="searchCard">
-            <h3>Search for City</h3>
+            <h5>Search for City</h5>
             <input type="text" id="citySearchBox" class="form-control" placeholder="Search by City">
             <button type="submit" id="searchBtn" class="search-btn">Search</button>
           </div>
-       </form>
-    </div>
-      <div class="displayCard">
-        <div class = h2 id=searchCity +"  "+ id=currDate></div>
+       <!-- </form> -->
+       
+<div class="container-fluid">ContainerFluid>
+    <table class="table">
+        <thead>
+            <tr id="tableHead">
+                <th scope="col" id="recent" style: font-size:22>Recent Searches</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>       
+</div>
+</div>
+
+<div class="displayCard">
+        <div class = h3 id=cityAndDate></div>
         <!-- <div class = h2 id=currDate></div> -->
         <div><img id="wIcon" src="" alt="weather icon"></div>
         
@@ -65,27 +79,31 @@
               <td class="tg-0lax" id="apiIcon" ></td>
             </tr> -->
             <tr>
-              <td class="tg-0lax">Temperature: </td>
-              <td class="tg-0lax" id="apiTemp"></td>
+              <td class="col-1">Temperature: </td>
+              <td class="col-2" id="apiTemp"></td>
             </tr>
             <tr>
-              <td class="tg-0lax">Humidity: </td>
-              <td class="tg-0lax" id="apiHumidity"></td>
+              <td class="col-1">Humidity: </td>
+              <td class="col-2" id="apiHumidity"></td>
             </tr>
             <tr>
-              <td class="tg-0lax">Wind Speed:</td>
-              <td class="tg-0lax" id=apiWind></td>
+              <td class="col-1">Wind Speed:</td>
+              <td class="col-2" id=apiWind></td>
             </tr>
-            <!-- <tr>
-              <td class="tg-0lax">UV Index:</td>
-              <td class="tg-0lax" id=apiUV></td>
-            </tr> -->
+            </tbody>
+          </table> 
+          
+        <table class="tg">
+          <tbody>
+            <tr>
+              <td class="col-1">UV Index&nbsp&nbsp </td>
+              <td class="" id=apiUV></td>
+            </tr>
           </tbody>
-          </table>  
-          <div class = button  id = apiUV type = "button" >Button</div>
+        </table> 
       </div>
     </div>    
-     
+  </div>   
     
     <div class="DayTitle">5 Day Forecast</div> 
     <div class="fiveDayContainer">
@@ -124,11 +142,23 @@
         <h4 id="day5_humidity"></h4>
         
       </div>
-    </div>    
+        
 
 <script>
-
+$(document).ready(function () {
 var dayDate = moment().format('M/D/YY')
+
+// Get the city from the cityListObj array in Local Storage. If the array doesn't exist, create an empty array
+cityListObj = JSON.parse(localStorage.getItem("city"));
+  if (!cityListObj) {
+    cityListObj = [];
+  }//if statement close
+
+var LastSearchedCity = cityListObj[cityListObj.length-1];
+console.log(LastSearchedCity);
+
+// $("#citySearchBox").val(LastSearchedCity);
+
 // var icon = "default ICON"
 // var temp = "default temp"
 // var humidity = "default humidity"
@@ -154,45 +184,76 @@ var dayDate = moment().format('M/D/YY')
 
 // Activate the 2 API calls using a button event fed by the target city
 
-$("#searchBtn").on("click", function () {//This opens the button click function
-console.log("Just Clicked!")
- });
+// if ($("citySearchBox").val()===null){
+var  targetCity=LastSearchedCity;
+// }
+// else{
+//   var targetCity = $("citySearchBox").val(); 
+// }
 
-COMMENT OUT ALL THIS FOR NOW - UNTIL LINE 280
+console.log(targetCity);
+
+getWeather();
+
+var targetCity = $("#citySearchBox").val().trim(); 
+console.log(targetCity); 
+
+
+// console.log("Just Clicked!");
+// console.log(targetCity);
+// console.log(LastSearchedCity);
+//  });
+
+
 
 
 // Initial API call to OpenWeather API to pull back latitude and longitude for target city
 // Store returned Lat and Lon in variables to feed the next call (OpenWeather One Call) to access daily forecast data and current UV Index
-var city = $("#searchCity").val().trim();
-const myWeatherKey = "eb316842a585fb8c5d377857dda881c6"
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+myWeatherKey
-console.log(city);
+
+
+
+
+
+
+function getWeather() {
+
+  const myWeatherKey = "eb316842a585fb8c5d377857dda881c6"
+var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+targetCity+"&appid="+myWeatherKey
 $.ajax({
     url: queryURL,
     method: 'GET'})
     .then(function(data){
-  console.log(data);    
+  // console.log(data);    
 
 var lat = data.coord.lat;
 var long = data.coord.lon;
 
-// Store the target city into the CityList object in local storage along with Lat and Lon to be used for 
-// appending selection buttons for previously selected cities
-cityListObj = JSON.parse(localStorage.getItem("city"));
-  if (!cityListObj) {
-    cityListObj = [];
-  }
-  cityListObj.push(data.name);
-  localStorage.setItem("city", JSON.stringify(cityListObj));
 
-// API call feeding lat and lon to OpenWeather One Call to pull back daily forecast data and current UV Index
-var queryOneCallURL = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+long+"&appid="+myWeatherKey
+
+
+
+
+
+// cityListObj.push(data.name);
+//   localStorage.setItem("city", JSON.stringify(cityListObj));
+// console.log(JSON.stringify(cityListObj));
+
+  var queryOneCallURL = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+long+"&appid="+myWeatherKey
+
+
+
+//Determine last city from cityListObj array
+
+  // var LastCity = [cityListObj.length-1];
+  // console.log(LastCity);
+
+  // API call feeding lat and lon to OpenWeather One Call to pull back daily forecast data and current UV Index
 
 $.ajax({
     url: queryOneCallURL,
     method: 'GET'})
     .then(function(dataOC){
-  console.log(dataOC);
+  // console.log(dataOC);
   
   // Store One Call response in Local Storage as an object (weather) 
   localStorage.setItem("weather", JSON.stringify(dataOC));
@@ -207,25 +268,69 @@ $.ajax({
 //     .done(function(dataOneCall){
       
 
+ 
+   
+//  //console.log(dataOneCall);
 
-    //console.log(dataOneCall);
-
-  //CURRENT DATA FROM THE OPENWEATHER ONE CALL API CALL  
+//   //CURRENT DATA FROM THE OPENWEATHER ONE CALL API CALL  
   var currDate = moment.unix(dataOC.current.dt).format('MM/DD/YY');
   var currTemp = (((dataOC.current.temp)-273.15)*9/5+32).toFixed(0)+"°F";
   var currHumidity = (dataOC.current.humidity+"%");
   var currWindSpeed = (dataOC.current.wind_speed*2.237).toFixed(0)+" mph";
   var currUVI = Math.floor(dataOC.current.uvi);
-  // console.log(currDate); 
-  // console.log(currTemp); 
-  // console.log(currHumidity); 
-  // console.log(currWindSpeed);
-  // console.log(currUVI);
   var wthrIcon = "http://openweathermap.org/img/w/"+dataOC.current.weather[0].icon+".png"
+  
+  $("#currDate").text(currDate);
+  $("#cityAndDate").text(data.name+"  ("+currDate+")");
+  $("#apiLat").text(data.coord.lat);
+  $("#apiLong").text(data.coord.lon);
+  $("#apiDate").text(moment().format('MM/DD/YY'));
+  $("#wIcon").attr("src",wthrIcon);
+  $("#apiTemp").text(currTemp);
+  $("#apiHumidity").text(currHumidity);
+  $("#apiWind").text(currWindSpeed);
+  $("#apiUV").text(currUVI);
+//   // console.log(currDate); 
+//   // console.log(currTemp); 
+//   // console.log(currHumidity); 
+//   // console.log(currWindSpeed);
+//   // console.log(currUVI);
+  
 
-  // console.log(wthrIcon);
+//   //Change UV Index box color. Levels reflect EPA guidelines: https://www.epa.gov/sunsafety/uv-index-scale-0
+//   //0-2 = Low, 3-7 = Moderate, 8+ = High 
+
+if (currUVI >=8) {
+  $("#apiUV").removeClass();
+  $("#apiUV").addClass("hiUV");
+  } 
+  else if (currUVI <=2){ 
+    $("#apiUV").removeClass();
+    $("#apiUV").addClass("lowUV");
+  }
+  else{
+    $("#apiUV").removeClass();
+    $("#apiUV").addClass("modUV");
+  }
+     
+  cityListObj = JSON.parse(localStorage.getItem("city"));
+                if (!cityListObj) {
+                    cityListObj = [];
+                }//This is end of the "if" statement
+                cityListObj.push(data.name);
+                localStorage.setItem("city", JSON.stringify(cityListObj)); 
+
+                // ELIMINATE DUPLICATES IN CITY LIST OBJECT IN LOCAL STORAGE TO BUILD THE BUTTONS FOR RECENT SEARCHES
+var uniqueCities = [...new Set(cityListObj)];
+
+// console.log(cityListObj);
+// console.log(uniqueCities);
+// FIND THE LAST SEARCHED CITY
+
+//   // console.log(wthrIcon);
+
  
-  //LOOP THROUGH AN ARRAY TO POPULATE THE 5 DAY FORECAST  
+// LOOP THROUGH AN ARRAY TO POPULATE THE 5 DAY FORECAST  
   dayLoop = [0, 1, 2, 3, 4, 5, 6]
   for (var i = 0; i < dayLoop.length; i++) {
   var dayDate = moment.unix(weatherObj.daily[i].dt).format('MM/DD/YY');
@@ -233,50 +338,49 @@ $.ajax({
   var dayHumidity = (weatherObj.daily[i].humidity+"%");
   var dayWindSpeed = (weatherObj.daily[i].wind_speed*2.237).toFixed(0)+" mph";
   var dayWthrIcon = "http://openweathermap.org/img/w/"+weatherObj.daily[i].weather[0].icon+".png" 
-  
+// DISPLAY TODAY'S WEATHER DATA IN THE DISPLAY PANE
   $("#day"+ dayLoop[i]+"_date").text(dayDate);
   $("#day"+ dayLoop[i]+"_icon").attr("src",dayWthrIcon);
   $("#day"+ dayLoop[i]+"_temp").text("Temp: "+dayTemp);
   $("#day"+ dayLoop[i]+"_humidity").text("Humidity: "+dayHumidity);
-  
-  // console.log(dayDate); 
-  // console.log(dayTemp);
-  // console.log(dayWthrIcon);  
-  // console.log(dayHumidity); 
+};//dayLoop close
+ 
    
- };
-// DISPLAY TODAY'S WEATHER DATA IN THE DISPLAY PANE
-  $("#currDate").text(currDate);
-  $("#searchCity").text(city);
-  $("#apiLat").append(data.coord.lat);
-  $("#apiLong").append(data.coord.lon);
-  $("#apiDate").append(moment().format('MM/DD/YY'));
-  $("#wIcon").attr("src",wthrIcon);
-  $("#apiTemp").append(currTemp);
-  $("#apiHumidity").append(currHumidity);
-  $("#apiWind").append(currWindSpeed);
-  $("#apiUV").text(currUVI);
-  
-  
 
+// for (var i = 0; i < cityListObj.length; i++) {
+});//initial AJAX block ("data") 
+}); //second AJAX block ("dataOC")
   
+} //get data function close 
+//   }
+
+$("#searchBtn").on('click', function () {//This opens the button click function
+// event.preventDefault()
+
+getWeather();
+//   // console.log(dayDate); 
+//   // console.log(dayTemp);
+//   // console.log(dayWthrIcon);  
+//   // console.log(dayHumidity); 
    
  
 
- 
 
- });
- }); 
-// }
-// )  
-// getWeatherOneCall();
-// getWeather();
+});//Ready function close
+}); //Search button close  
 
-// function createInput(){
-//     var $input = $('<input type="button" value="new button" />');
-//     $input.appendTo($("citySearchBox"));
-// }
-// createInput();
+// // }
+// // )  
+// // getWeatherOneCall();
+// // getWeather();
+
+// // function createInput(){
+// //     var $input = $('<input type="button" value="new button" />');
+// //     $input.appendTo($("citySearchBox"));
+// // }
+// // createInput();
+
+
 
 </script>
 
