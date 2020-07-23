@@ -1,19 +1,16 @@
 # 06 Server-Side APIs: Weather Dashboard
 
-Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
-
-Use the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. The documentation includes a section called "How to start" that will provide basic setup and usage instructions. Use `localStorage` to store any persistent data.
-
-## User Story
-
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
+An interactive weather dashboard app designed for travellers who want to see teh weather outlook for multiple cities. Utilizing the OpenWeather API, the app retieves weather data for any city the traveller enters into the search box.
 
 
-## Acceptance Criteria
 
-GIVEN a weather dashboard with form inputs
+
+## Features
+
+Traveller enters a city in the search box and presses the search button to bring up:
+1. Temperature
+2. Humidity
+3. oard with form inputs
 WHEN I search for a city
 
 THEN I am presented with current and future conditions for that city and that city is added to the search history
