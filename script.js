@@ -1,47 +1,47 @@
 $(document).ready(function () {
   var dayDate = moment().format('M/D/YY')
   
-  // Get the city from the cityListObj array in Local Storage. If the array doesn't exist, create an empty array
-  cityListObj = JSON.parse(localStorage.getItem("city"));
-    if (!cityListObj) {
-      cityListObj = [];
+  // Get the city from the uniqueCities array in Local Storage. If the array doesn't exist, create an empty array
+  uniqueCities = JSON.parse(localStorage.getItem("city"));
+    if (!uniqueCities) {
+      uniqueCities = [];
     }//if statement close
   var selectedCity = $("citySearchBox").val();
-  var LastSearchedCity = cityListObj[cityListObj.length-1];
+  var LastSearchedCity = uniqueCities[uniqueCities.length-1];
   
   
   
-  console.log("Last City= "+LastSearchedCity);
-  console.log("Selected City= "+selectedCity);
-  // console.log("Target City= "+targetCity);
+  // console.log("Last City= "+LastSearchedCity);
+  // console.log("Selected City= "+selectedCity);
+  // // console.log("Target City= "+targetCity);
  
-  // ELIMINATE DUPLICATES IN CITY LIST OBJECT IN LOCAL STORAGE TO BUILD THE BUTTONS FOR RECENT SEARCHES
-  var cityListObj = [...new Set(cityListObj)];
-  for (var i = cityListObj.length; i > 0; i--) {
-    if (cityListObj[i] != undefined){
-
+  // ELIMINATE DUPLICATES IN CITY LIST OBJECT
+  var uniqueCities = [...new Set(uniqueCities)];
+  for (var i = uniqueCities.length; i > 0; i--) {
+    if (uniqueCities[i] != undefined){
+  // BUILD BUTTONS FOR RECENT SEARCHES
     var cityRow = $("<tr>");
     var cityColumn = $("<td>")
     var cityLink = $("<button>")
-    cityLink.attr("class", "btn btn-light");
-    cityLink.attr("city", cityListObj[i]);
-    cityLink.text(cityListObj[i]);
+    cityLink.attr("class", "btn btn-med");
+    cityLink.attr("city-name", uniqueCities[i]);
+    cityLink.text(uniqueCities[i]);
     $(cityColumn).append(cityLink);
     $(cityRow).append(cityColumn);
-    $("tbodySearch").append(cityRow);
+    $("#tbodyRecent").append(cityRow);
 }
 };
    $("#searchBtn").on('click', function () {//This opens the button click function
   // event.preventDefault()
     var selectedCity = $("#citySearchBox").val().trim();
-    cityListObj.push(selectedCity);
-    localStorage.setItem("city", JSON.stringify(cityListObj));
-    cityListObj = JSON.parse(localStorage.getItem("city"));
-    var targetCity = cityListObj[cityListObj.length-1];
+    uniqueCities.push(selectedCity);
+    localStorage.setItem("city", JSON.stringify(uniqueCities));
+    uniqueCities = JSON.parse(localStorage.getItem("city"));
+    var targetCity = uniqueCities[uniqueCities.length-1];
 
-    console.log("Button Last City= "+LastSearchedCity);
-    console.log("Button Selected City= "+selectedCity);
-    console.log("Button Target City= "+targetCity);
+    // console.log("Button Last City= "+LastSearchedCity);
+    // console.log("Button Selected City= "+selectedCity);
+    // console.log("Button Target City= "+targetCity);
 
 
 getWeather();  
@@ -56,7 +56,7 @@ getWeather();
   if (citySearchBox.value.length==0){
     var  targetCity=LastSearchedCity;
     }else{
-    var targetCity = cityListObj[cityListObj.length-1]; 
+    var targetCity = uniqueCities[uniqueCities.length-1]; 
     }const myWeatherKey = "eb316842a585fb8c5d377857dda881c6"
   console.log("Target City for API Call= "+targetCity)
   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+targetCity+"&appid="+myWeatherKey  
@@ -118,12 +118,12 @@ getWeather();
       $("#apiUV").addClass("modUV");
     }
        
-    cityListObj = JSON.parse(localStorage.getItem("city"));
-                  if (!cityListObj) {
-                      cityListObj = [];
+    uniqueCities = JSON.parse(localStorage.getItem("city"));
+                  if (!uniqueCities) {
+                      uniqueCities = [];
                   }//This is end of the "if" statement
-                  // cityListObj.push(targetCity);
-                  // localStorage.setItem("city", JSON.stringify(cityListObj)); 
+                  // uniqueCities.push(targetCity);
+                  // localStorage.setItem("city", JSON.stringify(uniqueCities)); 
   
   
   
@@ -147,7 +147,7 @@ getWeather();
    
  
   
-  // for (var i = 0; i < cityListObj.length; i++) {
+  // for (var i = 0; i < uniqueCities.length; i++) {
   });//initial AJAX block ("data") 
   }); //second AJAX block ("dataOC")
   };//Ready function close  
