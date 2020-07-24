@@ -34,4 +34,4 @@ Last thing I was working on when I ran out of time was using each of the recent 
 
 
 ## Screenshot
-<IMG src= "./06-Homework/blob/master/assets/screenshot.png">
+<IMG src= "http://github.com/rgsommer777/06-Homework/blob/master/assets/screenshot.png">
