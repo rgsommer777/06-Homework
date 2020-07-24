@@ -1,6 +1,6 @@
 # 06 Server-Side APIs: Weather Dashboard
 
-An interactive weather dashboard app designed for travellers who want to see teh weather outlook for multiple cities. Utilizing the OpenWeather API, the app retieves weather data for any city the traveller enters into the search box.
+An interactive weather dashboard app designed for travellers who want to see the weather outlook for multiple cities. Utilizing the OpenWeather API, the app retieves weather data for any city the traveller enters into the search box.
 
 ## Features
 
@@ -25,4 +25,13 @@ Additionally, a five day forecast is displayed with each of the five day's:
 3. Temperature
 4. Humidity
 
+## My Approach
+I made two separate calls to the Open Weather API. The first to retieve latitude and longitude of the city that was searched. The next call uses the lat and lon to bring up the detailed One Call response that includes current UV Index for the city as well as the 5 day forecast detail needed for the future forecast.
+
+I used local storage to retrieve the searched cities snd add them to the recent search column.
+
+Last thing I was working on when I ran out of time was using each of the recent search city buttons city name data to launch the getWeather function.
+
+
 ## Screenshot
+![](assets/screenshot.png)

@@ -1,26 +1,21 @@
 $(document).ready(function () {
   var dayDate = moment().format('M/D/YY')
   
-  // Get the city from the uniqueCities array in Local Storage. If the array doesn't exist, create an empty array
+// GET THE CITY FROM THE UNIQUECITIES ARRAY IN LOCAL STORAGE. IF IT DOESN'T EXIST, CREATE IT
   uniqueCities = JSON.parse(localStorage.getItem("city"));
     if (!uniqueCities) {
       uniqueCities = [];
-    }//if statement close
+    }
   var selectedCity = $("citySearchBox").val();
   var LastSearchedCity = uniqueCities[uniqueCities.length-1];
   
-  // console.log("Last City= "+LastSearchedCity);
-  // console.log("Selected City= "+selectedCity);
-  // // console.log("Target City= "+targetCity);
-    //  uniqueCities = JSON.parse(localStorage.getItem("city"));
-    //               if (!uniqueCities) {
-    //                   uniqueCities = [];
-    //               } 
-  // ELIMINATE DUPLICATES IN CITY LIST OBJECT
+  
+// ELIMINATE DUPLICATES IN CITY LIST OBJECT
   var uniqueCities = [...new Set(uniqueCities)];
   for (var i = uniqueCities.length; i > 0; i--) {
     if (uniqueCities[i] != undefined){
-  // BUILD BUTTONS FOR RECENT SEARCHES
+
+// BUILD BUTTONS FOR RECENT SEARCHES
     var cityRow = $("<tr>");
     var cityColumn = $("<td>")
     var cityLink = $("<button>")
@@ -36,63 +31,62 @@ $(document).ready(function () {
 
 };
    $("#searchBtn").on('click', function () {//This opens the button click function
-  // event.preventDefault()
+
     var selectedCity = $("#citySearchBox").val().trim();
     uniqueCities.push(selectedCity);
     localStorage.setItem("city", JSON.stringify(uniqueCities));
     uniqueCities = JSON.parse(localStorage.getItem("city"));
     var targetCity = uniqueCities[uniqueCities.length-1];
 
-    // console.log("Button Last City= "+LastSearchedCity);
-    // console.log("Button Selected City= "+selectedCity);
-    // console.log("Button Target City= "+targetCity);
 
-
+//CALL THE FUNCTION WITHIN THE SEARCH BUTTON
 getWeather();  
-  }); //Search button close   
+  });
   
-  // targetCity=LastSearchedCity;
-  
- 
+ //CALL THE FUNCTION OUTSIDE THE SEARCH BUTTON
   getWeather();
   function getWeather(){
-
+// CHECK FOR AN EMPTY SEARCH BOX - IF SO, LOAD LAST SEARCHED CITY
   if (citySearchBox.value.length==0){
     var  targetCity=LastSearchedCity;
     }else{
     var targetCity = uniqueCities[uniqueCities.length-1]; 
     }const myWeatherKey = "eb316842a585fb8c5d377857dda881c6"
   console.log("Target City for API Call= "+targetCity)
+ 
+//RUN FIRST API CALL TO OPENWEATHER TO GET BACK LATITUDE AND LONGITUDE BASED ON THE CITY
   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q="+targetCity+"&appid="+myWeatherKey  
   $.ajax({
       url: queryURL,
       method: 'GET'})
       .then(function(data){
-    // console.log(data);    
-  
+    
+//STORE LAT AND LONG IN VARIABLES FOR USE BY SECOND API CALL  
   var lat = data.coord.lat;
   var long = data.coord.lon;
-  
+
+//SECOND API CALL (ONE CALL) TO BRING BACK 5 DAY FORECAST DATA AND CURRENT DAY'S UV INDEX  
   var queryOneCallURL = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+long+"&appid="+myWeatherKey
   $.ajax({
       url: queryOneCallURL,
       method: 'GET'})
       .then(function(dataOC){
-    // console.log(dataOC);
+
     
-    // Store One Call response in Local Storage as an object (weather) 
+// STORE THE ONE CALL RESPONSE IN LOCAL STORAGE AS AN OBJECT (WEATHEROBJ) 
     localStorage.setItem("weather", JSON.stringify(dataOC));
     weatherObj = JSON.parse(localStorage.getItem("weather"));  
   
       
-  //CURRENT DATA FROM THE OPENWEATHER ONE CALL API CALL  
+//CURRENT DATA FROM THE OPENWEATHER ONE CALL API CALL  
     var currDate = moment.unix(dataOC.current.dt).format('MM/DD/YY');
     var currTemp = (((dataOC.current.temp)-273.15)*9/5+32).toFixed(0)+"°F";
     var currHumidity = (dataOC.current.humidity+"%");
     var currWindSpeed = (dataOC.current.wind_speed*2.237).toFixed(0)+" mph";
     var currUVI = Math.floor(dataOC.current.uvi);
     var wthrIcon = "http://openweathermap.org/img/w/"+dataOC.current.weather[0].icon+".png"
-    
+
+//POPULATE UI FOR CURRENT FORECAST WITH DATA RETURNED FROM API CALLS       
     $("#currDate").text(currDate);
     $("#cityAndDate").text(data.name+"  ("+currDate+")");
     $("#apiLat").text(data.coord.lat);
@@ -111,14 +105,12 @@ getWeather();
       //     city2 + "&appid=1f2cf6d8fabf4123eb61df651c4f522d";
 };
 
-      $(".btn").on("click", btnRecentDisplay);
-      
-  
+$(".btn").on("click", btnRecentDisplay);
 
-// }); 
+
     
-  // Change UV Index box color. Levels reflect EPA guidelines: https://www.epa.gov/sunsafety/uv-index-scale-0
-  // 0-2 = Low, 3-7 = Moderate, 8+ = High 
+// CHANGE UV INDEX BOX COLOR. LEVELS REFLECT EPA GUIDELINES: https://www.epa.gov/sunsafety/uv-index-scale-0
+// 0-2 = FAVORABLE, 3-7 = MODERATE, 8+ = High 
   
   if (currUVI >=8) {
     $("#apiUV").removeClass();
@@ -144,23 +136,17 @@ getWeather();
     var dayWindSpeed = (weatherObj.daily[i].wind_speed*2.237).toFixed(0)+" mph";
     var dayWthrIcon = "http://openweathermap.org/img/w/"+weatherObj.daily[i].weather[0].icon+".png" 
 
-    // DISPLAY TODAY'S WEATHER DATA IN THE DISPLAY PANE
+// DISPLAY TODAY'S WEATHER DATA IN THE DISPLAY PANE
     $("#day"+ dayLoop[i]+"_date").text(dayDate);
     $("#day"+ dayLoop[i]+"_icon").attr("src",dayWthrIcon);
     $("#day"+ dayLoop[i]+"_temp").text("Temp: "+dayTemp);
     $("#day"+ dayLoop[i]+"_humidity").text("Humidity: "+dayHumidity);
-  };//dayLoop close
+  };
    
  
-  
-  // for (var i = 0; i < uniqueCities.length; i++) {
-  });//initial AJAX block ("data") 
-  }); //second AJAX block ("dataOC")
-  };//Ready function close  
-   //get data function close 
-// getWeather(); 
-
-
+  });
+  }); 
+  }; 
 
   })
   
