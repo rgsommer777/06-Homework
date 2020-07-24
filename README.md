@@ -1,4 +1,4 @@
-# 06 Server-Side APIs: Weather Dashboard
+# Weather Dashboard
 
 An interactive weather dashboard app designed for travellers who want to see the weather outlook for multiple cities. Utilizing the OpenWeather API, the app retieves weather data for any city the traveller enters into the search box.
 
