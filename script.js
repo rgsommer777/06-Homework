@@ -9,12 +9,13 @@ $(document).ready(function () {
   var selectedCity = $("citySearchBox").val();
   var LastSearchedCity = uniqueCities[uniqueCities.length-1];
   
-  
-  
   // console.log("Last City= "+LastSearchedCity);
   // console.log("Selected City= "+selectedCity);
   // // console.log("Target City= "+targetCity);
- 
+    //  uniqueCities = JSON.parse(localStorage.getItem("city"));
+    //               if (!uniqueCities) {
+    //                   uniqueCities = [];
+    //               } 
   // ELIMINATE DUPLICATES IN CITY LIST OBJECT
   var uniqueCities = [...new Set(uniqueCities)];
   for (var i = uniqueCities.length; i > 0; i--) {
@@ -29,7 +30,10 @@ $(document).ready(function () {
     $(cityColumn).append(cityLink);
     $(cityRow).append(cityColumn);
     $("#tbodyRecent").append(cityRow);
+    
+  
 }
+
 };
    $("#searchBtn").on('click', function () {//This opens the button click function
   // event.preventDefault()
@@ -49,7 +53,7 @@ getWeather();
   
   // targetCity=LastSearchedCity;
   
-  
+ 
   getWeather();
   function getWeather(){
 
@@ -100,8 +104,19 @@ getWeather();
     $("#apiWind").text(currWindSpeed);
     $("#apiUV").text(currUVI);
   
-    
+    function btnRecentDisplay() {
+      console.log($(this).attr("city-name"));
+      // var city2 = $(this).attr("city-name");
+      // var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" +
+      //     city2 + "&appid=1f2cf6d8fabf4123eb61df651c4f522d";
+};
+
+      $(".btn").on("click", btnRecentDisplay);
+      
   
+
+// }); 
+    
   // Change UV Index box color. Levels reflect EPA guidelines: https://www.epa.gov/sunsafety/uv-index-scale-0
   // 0-2 = Low, 3-7 = Moderate, 8+ = High 
   
@@ -118,17 +133,8 @@ getWeather();
       $("#apiUV").addClass("modUV");
     }
        
-    uniqueCities = JSON.parse(localStorage.getItem("city"));
-                  if (!uniqueCities) {
-                      uniqueCities = [];
-                  }//This is end of the "if" statement
-                  // uniqueCities.push(targetCity);
-                  // localStorage.setItem("city", JSON.stringify(uniqueCities)); 
-  
-  
-  
-  
-  
+
+
 // LOOP THROUGH AN ARRAY TO POPULATE THE 5 DAY FORECAST  
     dayLoop = [0, 1, 2, 3, 4, 5, 6]
     for (var i = 0; i < dayLoop.length; i++) {
@@ -153,6 +159,9 @@ getWeather();
   };//Ready function close  
    //get data function close 
 // getWeather(); 
+
+
+
   })
   
   
