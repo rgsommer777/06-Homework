@@ -13,9 +13,9 @@ Traveller can then enter a city in the search box and press the search button to
 3. Temperature
 4. Humidity
 5. Wind speed
-6. UV Index (UV index also includes a color code.
- a. Favorable (2 or lower) = green
- b. Moderate (3-7) = yellow
+6. UV Index (UV index also includes a color code.<br>
+ a. Favorable (2 or lower) = green<br>
+ b. Moderate (3-7) = yellow<br>
  c. Severe (8 or over) = red
 
 Additionally, a five day forecast is displayed with each of the five day's:
