@@ -34,4 +34,4 @@ Last thing I was working on when I ran out of time was using each of the recent 
 
 
 ## Screenshot
-<IMG SRC= "assets/screenshot.png">
+<IMG SRC= "/rgsommer777/06-Homework/blob/master/assets/screenshot.png">
