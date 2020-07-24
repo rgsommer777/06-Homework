@@ -34,5 +34,6 @@ Last thing I was working on when I ran out of time was using each of the recent 
 
 
 ## Screenshot
-![alt text](https://github.com/rgsommer777/06-Homework/blob/master/assets/screenshot.png?raw=true)
+
+![](Assets/screenshot.png)
 
